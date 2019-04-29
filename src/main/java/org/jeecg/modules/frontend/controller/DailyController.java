@@ -152,7 +152,16 @@ public class DailyController {
 		Map<String, Object> result = dailyService.getDailyById(id);
 		return result;
 	}
-
+	/**
+	  * 通过id查询
+	 * @param id
+	 * @return
+	 */
+	@GetMapping(value = "/queryByBelongId")
+	public List<String> queryByBelongId(@RequestParam(name="belong_id",required=true) String belong_id) {
+		List<String> result = dailyService.getDetailImg(belong_id);
+		return result;
+	}
   /**
       * 导出excel
    *

@@ -28,4 +28,9 @@ public class DailyServiceImpl extends ServiceImpl<DailyMapper, Daily> implements
     public Map<String, Object> getDailyById(String daily_id) {
         return this.baseMapper.getDailyById(daily_id);
     }
+
+    @Override
+    public List<String> getDetailImg(String belong_id) {
+        return this.baseMapper.getDetailImg(belong_id);
+    }
 }

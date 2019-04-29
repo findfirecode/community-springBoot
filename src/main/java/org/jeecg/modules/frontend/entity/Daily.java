@@ -40,6 +40,14 @@ public class Daily implements Serializable {
 	/**isExist*/
 	@Excel(name = "createBy", width = 15)
 	private String createBy;
+	/**isExist*/
+	@Excel(name = "buyNum", width = 15)
+	private Integer buyNum;
+	/**isExist*/
+	@Excel(name = "price", width = 15)
+	private Integer price;
+
+
 
 	public String getDailyId() {
 		return dailyId;
@@ -87,5 +95,21 @@ public class Daily implements Serializable {
 
 	public void setCreateBy(String createBy) {
 		this.createBy = createBy;
+	}
+
+	public Integer getBuyNum() {
+		return buyNum;
+	}
+
+	public void setBuyNum(Integer buyNum) {
+		this.buyNum = buyNum;
+	}
+
+	public Integer getPrice() {
+		return price;
+	}
+
+	public void setPrice(Integer price) {
+		this.price = price;
 	}
 }

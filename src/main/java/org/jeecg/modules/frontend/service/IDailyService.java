@@ -16,4 +16,5 @@ import java.util.Map;
 public interface IDailyService extends IService<Daily> {
     Page<Map<String, Object>> getDailyUser(Page<Map<String, Object>> page);
     Map<String, Object> getDailyById(String daily_id);
+    List<String> getDetailImg(String belong_id);
 }
