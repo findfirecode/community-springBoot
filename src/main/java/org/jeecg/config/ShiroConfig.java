@@ -64,6 +64,7 @@ public class ShiroConfig {
 		filterChainDefinitionMap.put("/v2/**", "anon");
 
 		filterChainDefinitionMap.put("/frontend/**", "anon");
+		filterChainDefinitionMap.put("/sys/common/**", "anon");
 
 		//性能监控
 		filterChainDefinitionMap.put("/actuator/metrics/**", "anon");

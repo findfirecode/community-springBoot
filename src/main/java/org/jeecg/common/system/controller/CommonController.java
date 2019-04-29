@@ -49,9 +49,9 @@ public class CommonController {
 		try {
 			String ctxPath = uploadpath;
 			String fileName = null;
-			String bizPath = "user";
+			String bizPath = "daily";
 			String nowday = new SimpleDateFormat("yyyyMMdd").format(new Date());
-			File file = new File(ctxPath + File.separator + bizPath + File.separator + nowday);
+			File file = new File(ctxPath + File.separator + bizPath);
 			if (!file.exists()) {
 				file.mkdirs();// 创建文件根目录
 			}
@@ -107,7 +107,6 @@ public class CommonController {
 			}
 			response.flushBuffer();
 		} catch (IOException e) {
-			log.info("预览图片失败" + e.getMessage());
 			// e.printStackTrace();
 		} finally {
 			if (inputStream != null) {
