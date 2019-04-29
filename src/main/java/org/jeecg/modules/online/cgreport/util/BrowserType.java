@@ -2,7 +2,7 @@ package org.jeecg.modules.online.cgreport.util;
 
 /**
  * 
- * @author  张代浩
+ * @author  邓瑞
  *
  */
 public enum BrowserType {

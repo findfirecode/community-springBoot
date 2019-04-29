@@ -23,7 +23,7 @@ public class Comments implements Serializable {
 
 	/**commentsId*/
 	@TableId(type = IdType.UUID)
-	@Excel(name = "commentsId", width = 15)
+	@Excel(name = "commentsId", width = 32)
 	private String commentsId;
 	/**userId*/
 	@Excel(name = "userId", width = 15)

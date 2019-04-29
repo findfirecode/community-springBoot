@@ -119,7 +119,7 @@ public class MyRealm extends AuthorizingRealm {
 	 */
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken auth) throws AuthenticationException {
-		log.debug("————身份认证方法————");
+//		log.debug("————身份认证方法————");
 		String token = (String) auth.getCredentials();
 		if (token == null) {
 			throw new AuthenticationException("token为空!");

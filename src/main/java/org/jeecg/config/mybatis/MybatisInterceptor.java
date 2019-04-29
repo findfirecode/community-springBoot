@@ -14,8 +14,11 @@ import org.apache.ibatis.plugin.Invocation;
 import org.apache.ibatis.plugin.Plugin;
 import org.apache.ibatis.plugin.Signature;
 import org.apache.shiro.SecurityUtils;
+import org.jeecg.common.aspect.AutoLogAspect;
 import org.jeecg.common.util.oConvertUtils;
 import org.jeecg.modules.system.entity.SysUser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @Intercepts({ @Signature(type = Executor.class, method = "update", args = { MappedStatement.class, Object.class }) })
 public class MybatisInterceptor implements Interceptor {
-
+	private static final Logger log = LoggerFactory.getLogger(AutoLogAspect.class);
 	@Override
 	public Object intercept(Invocation invocation) throws Throwable {
 		MappedStatement mappedStatement = (MappedStatement) invocation.getArgs()[0];
@@ -53,7 +56,7 @@ public class MybatisInterceptor implements Interceptor {
 						Object local_createBy = field.get(parameter);
 						field.setAccessible(false);
 						if (local_createBy == null || local_createBy.equals("")) {
-							String createBy = "jeecg-boot";
+							String createBy = "111";
 							// 获取登录用户信息
 							SysUser sysUser = (SysUser) SecurityUtils.getSubject().getPrincipal();
 							if (sysUser != null) {
@@ -100,7 +103,7 @@ public class MybatisInterceptor implements Interceptor {
 						Object local_updateBy = field.get(parameter);
 						field.setAccessible(false);
 						if (local_updateBy == null || local_updateBy.equals("")) {
-							String updateBy = "jeecg-boot";
+							String updateBy = "111";
 							// 获取登录用户信息
 							SysUser sysUser = (SysUser) SecurityUtils.getSubject().getPrincipal();
 							if (sysUser != null) {

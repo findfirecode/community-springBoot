@@ -193,8 +193,8 @@ public class SysUserController {
 			String[] arr = ids.split(",");
 			for (String id : arr) {
 				if(oConvertUtils.isNotEmpty(id)) {
-					this.sysUserService.update(new SysUser().setStatus(Integer.parseInt(status)),
-							new UpdateWrapper<SysUser>().lambda().eq(SysUser::getId,id));
+//					this.sysUserService.update(new SysUser().setStatus(Integer.parseInt(status)),
+//							new UpdateWrapper<SysUser>().lambda().eq(SysUser::getId,id));
 				}
 			}
 		} catch (Exception e) {

@@ -1,7 +1,7 @@
 package org.jeecg.common.util;
 
 /**
- * @author  张代浩
+ * @author  邓瑞
  */
 public class MyClassLoader extends ClassLoader {
 	public static Class getClassByScn(String className) {

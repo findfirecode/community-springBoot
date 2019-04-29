@@ -25,9 +25,6 @@ public class Daily implements Serializable {
 	@TableId(type = IdType.UUID)
 	@Excel(name = "dailyId", width = 15)
 	private String dailyId;
-	/**imgId*/
-	@Excel(name = "imgId", width = 15)
-	private Integer imgId;
 	/**title*/
 	@Excel(name = "title", width = 15)
 	private String title;
@@ -41,8 +38,8 @@ public class Daily implements Serializable {
 	@Excel(name = "isExist", width = 15)
 	private Integer isExist;
 	/**isExist*/
-	@Excel(name = "userId", width = 15)
-	private String userId;
+	@Excel(name = "createBy", width = 15)
+	private String createBy;
 
 	public String getDailyId() {
 		return dailyId;
@@ -50,14 +47,6 @@ public class Daily implements Serializable {
 
 	public void setDailyId(String dailyId) {
 		this.dailyId = dailyId;
-	}
-
-	public Integer getImgId() {
-		return imgId;
-	}
-
-	public void setImgId(Integer imgId) {
-		this.imgId = imgId;
 	}
 
 	public String getTitle() {
@@ -92,11 +81,11 @@ public class Daily implements Serializable {
 		this.isExist = isExist;
 	}
 
-	public String getUserId() {
-		return userId;
+	public String getCreateBy() {
+		return createBy;
 	}
 
-	public void setUserId(String userId) {
-		this.userId = userId;
+	public void setCreateBy(String createBy) {
+		this.createBy = createBy;
 	}
 }

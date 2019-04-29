@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * 
- * @author  张代浩
+ * @author  邓瑞
  *
  */
 public class oConvertUtils {

@@ -4,7 +4,7 @@ import org.jeecgframework.codegenerate.window.CodeWindow;
 
 /**
  * @Title: 单表代码生成器入口
- * @author 张代浩
+ * @author 邓瑞
  * @site www.jeecg.org
  * @version：V1.0.1
  */

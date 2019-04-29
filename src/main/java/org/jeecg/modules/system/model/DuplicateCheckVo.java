@@ -8,7 +8,7 @@ import lombok.Data;
 /**
  * @Title: DuplicateCheckVo
  * @Description: 重复校验VO
- * @author 张代浩
+ * @author 邓瑞
  * @date 2019-03-25
  * @version V1.0
  */

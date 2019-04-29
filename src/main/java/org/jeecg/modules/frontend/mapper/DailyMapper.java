@@ -17,12 +17,13 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface DailyMapper extends BaseMapper<Daily> {
     @Select("SELECT d.*,r.url as p_url,u.avatar FROM daily d "+
-            "LEFT JOIN resource r on d.img_id = r.resource_id "+
-            "LEFT JOIN `user` u on d.user_id = u.user_id")
+            "LEFT JOIN resource r on d.daily_id = r.belong_id "+
+            "LEFT JOIN `user` u on d.create_by = u.user_id " +
+            "where r.type = 'cover'")
     List<Map<String, Object>> getDailyUser(Page<Map<String, Object>> page);
     @Select("SELECT d.*,r.url as p_url,u.avatar FROM daily d "+
             "LEFT JOIN resource r on d.img_id = r.resource_id "+
-            "LEFT JOIN `user` u on d.user_id = u.user_id " +
+            "LEFT JOIN `user` u on d.create_by = u.user_id " +
             "where daily_id = #{daily_id}")
     Map<String, Object> getDailyById(String daily_id);
 }

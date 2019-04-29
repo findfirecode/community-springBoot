@@ -35,10 +35,13 @@ public class Resource implements Serializable {
 	@Excel(name = "creatTime", width = 20, format = "yyyy-MM-dd HH:mm:ss")
 	@JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
-	private Date creatTime;
+	private Date createTime;
 	/**createBy*/
 	@Excel(name = "createBy", width = 15)
 	private String createBy;
+	/**belong_id*/
+	@Excel(name = "belong_id", width = 15)
+	private String belong_id;
 
 	public String getResourceId() {
 		return resourceId;
@@ -64,12 +67,12 @@ public class Resource implements Serializable {
 		this.url = url;
 	}
 
-	public Date getCreatTime() {
-		return creatTime;
+	public Date getCreateTime() {
+		return createTime;
 	}
 
-	public void setCreatTime(Date creatTime) {
-		this.creatTime = creatTime;
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
 	}
 
 	public String getCreateBy() {
@@ -78,5 +81,13 @@ public class Resource implements Serializable {
 
 	public void setCreateBy(String createBy) {
 		this.createBy = createBy;
+	}
+
+	public String getBelong_id() {
+		return belong_id;
+	}
+
+	public void setBelong_id(String belong_id) {
+		this.belong_id = belong_id;
 	}
 }
