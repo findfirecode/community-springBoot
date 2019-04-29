@@ -22,5 +22,5 @@ public interface CommentsMapper extends BaseMapper<Comments> {
             "LEFT JOIN `user` u on c.user_id = u.user_id " +
             "LEFT JOIN resource r on u.img_id = r.resource_id " +
             "where c.content like '%${condition}%' and c.type='论坛' and c.parent_id = #{parentId}")
-    List<Map<String, Object>> getCommentsUser(Page<Map<String, Object>> page, String condition, String parentId);
+    List<Map<String, Object>> getCommentsUser(Page<Map<String, Object>> page, @Param("condition") String condition, @Param("parentId") String parentId);
 }

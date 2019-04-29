@@ -60,7 +60,7 @@ public class CommentsController {
 	 * @return
 	 */
 	@GetMapping(value = "/list")
-	public Object queryPageList(Comments comments,
+	public Page<Map<String, Object>> queryPageList(Comments comments,
 									  @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
 									  @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
 										@RequestParam(name="contentCondition", defaultValue="%") String contentCondition,
@@ -68,7 +68,7 @@ public class CommentsController {
 									  HttpServletRequest req) {
 		Page<Map<String,Object>> pages = new Page(pageNo, pageSize);
 		Page<Map<String, Object>> list=commentsService.getCommentsUser(pages, contentCondition, parent_id);
-		return list.getRecords();
+		return list;
 	}
 
 	@GetMapping(value = "/total")
