@@ -27,6 +27,6 @@ public interface DailyMapper extends BaseMapper<Daily> {
             "where daily_id = #{daily_id} and r.type='cover' ")
     Map<String, Object> getDailyById(String daily_id);
     @Select("SELECT url FROM resource r "+
-            "where belong_id = #{belong_id} and type='detail' ")
+            "where belong_id = #{belong_id}")
     List<String> getDetailImg(String belong_id);
 }

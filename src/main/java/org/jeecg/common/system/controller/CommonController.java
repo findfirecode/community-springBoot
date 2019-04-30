@@ -59,14 +59,14 @@ public class CommonController {
 			String fileName = null;
 			String bizPath = typeFolder;
 			String nowday = new SimpleDateFormat("yyyyMMdd").format(new Date());
-			File file = new File(ctxPath + File.separator + bizPath);
+			File file = new File(ctxPath + File.separator + bizPath + File.separator + belong_id);
 			if (!file.exists()) {
 				file.mkdirs();// 创建文件根目录
 			}
 			MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
 			MultipartFile mf = multipartRequest.getFile("file");// 获取上传文件对象
 			String orgName = mf.getOriginalFilename();// 获取文件名
-			fileName = orgName.substring(0, orgName.lastIndexOf(".")) + "_" + System.currentTimeMillis() + orgName.substring(orgName.indexOf("."));
+			fileName = type +"_"+orgName.substring(0, orgName.lastIndexOf(".")) + "_" + System.currentTimeMillis() + orgName.substring(orgName.indexOf("."));
 			String savePath = file.getPath() + File.separator + fileName;
 			File savefile = new File(savePath);
 			FileCopyUtils.copy(mf.getBytes(), savefile);
@@ -80,7 +80,7 @@ public class CommonController {
 //			存入数据库
 			Resource r = new Resource();
 			r.setType(type);
-			r.setUrl(typeFolder+"/"+fileName);
+			r.setUrl(typeFolder+"/"+belong_id+"/"+fileName);
 			r.setBelong_id(belong_id);
 			resourceService.save(r);
 		} catch (IOException e) {
@@ -102,14 +102,14 @@ public class CommonController {
 			String fileName = null;
 			String bizPath = typeFolder;
 			String nowday = new SimpleDateFormat("yyyyMMdd").format(new Date());
-			File file = new File(ctxPath + File.separator + bizPath);
+			File file = new File(ctxPath + File.separator + bizPath + File.separator + belong_id);
 			File savefile = null;
 			if (!file.exists()) {
 				file.mkdirs();// 创建文件根目录
 			}
 			for (int i = 0; i < files.length; i++) {
 				String orgName = files[i].getOriginalFilename();// 获取文件名
-				fileName = orgName.substring(0, orgName.lastIndexOf(".")) + "_" + System.currentTimeMillis() + orgName.substring(orgName.indexOf("."));
+				fileName = type+"_"+orgName.substring(0, orgName.lastIndexOf(".")) + "_" + System.currentTimeMillis() + orgName.substring(orgName.indexOf("."));
 				String savePath = file.getPath() + File.separator + fileName;
 				savefile = new File(savePath);
 				FileCopyUtils.copy(files[i].getBytes(), savefile);
@@ -123,7 +123,7 @@ public class CommonController {
 				//			存入数据库
 				Resource r = new Resource();
 				r.setType(type);
-				r.setUrl(typeFolder+"/"+fileName);
+				r.setUrl(typeFolder+"/"+belong_id+"/"+fileName);
 				r.setBelong_id(belong_id);
 				resourceService.save(r);
 			}
