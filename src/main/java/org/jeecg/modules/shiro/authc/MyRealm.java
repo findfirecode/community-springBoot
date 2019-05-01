@@ -60,7 +60,7 @@ public class MyRealm extends AuthorizingRealm {
 	 */
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-		log.info("————权限认证 [ roles、permissions]————");
+//		log.info("————权限认证 [ roles、permissions]————");
 		SysUser sysUser = null;
 		String username = null;
 		if(principals!=null) {

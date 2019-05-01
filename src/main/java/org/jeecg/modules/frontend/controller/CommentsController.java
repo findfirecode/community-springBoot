@@ -70,15 +70,6 @@ public class CommentsController {
 		Page<Map<String, Object>> list=commentsService.getCommentsUser(pages, contentCondition, parent_id);
 		return list;
 	}
-
-	@GetMapping(value = "/total")
-	public long getTotal(){
-		QueryWrapper<Comments> queryWrapper = new QueryWrapper<>();
-		queryWrapper
-				.eq("parent_id","-1");
-		long conut  = (long)commentsService.count(queryWrapper);
-		return conut;
-	}
 	/**
 	  *   添加
 	 * @param comments
@@ -90,7 +81,7 @@ public class CommentsController {
 		try {
 			comments.setIsdisplay(0);
 			comments.setIsreply(0);
-			comments.setType("论坛");
+			comments.setType("comments");
 			comments.setUserId("111");
 			commentsService.save(comments);
 			result.success("添加成功！");
