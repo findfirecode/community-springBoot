@@ -1,6 +1,7 @@
-package ${bussiPackage}.${entityPackage}.controller;
+package org.jeecg.modules.frontend.controller;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.io.IOException;
@@ -11,14 +12,16 @@ import javax.servlet.http.HttpServletResponse;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.util.oConvertUtils;
-import ${bussiPackage}.${entityPackage}.entity.${entityName};
-import ${bussiPackage}.${entityPackage}.service.I${entityName}Service;
+import org.jeecg.modules.frontend.entity.Chat;
+import org.jeecg.modules.frontend.entity.User;
+import org.jeecg.modules.frontend.service.IChatService;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 
+import org.jeecg.modules.frontend.service.IUserService;
 import org.jeecgframework.poi.excel.ExcelImportUtil;
 import org.jeecgframework.poi.excel.def.NormalExcelConstants;
 import org.jeecgframework.poi.excel.entity.ExportParams;
@@ -34,50 +37,54 @@ import com.alibaba.fastjson.JSON;
 
  /**
  * @Title: Controller
- * @Description: ${tableVo.ftlDescription}
+ * @Description: 聊天
  * @author： jeecg-boot
- * @date：   ${.now?string["yyyy-MM-dd"]}
+ * @date：   2019-05-02
  * @version： V1.0
  */
 @RestController
-@RequestMapping("/${entityPackage}/${entityName?uncap_first}")
+@RequestMapping("/frontend/chat")
 @Slf4j
-public class ${entityName}Controller {
+public class ChatController {
+
 	@Autowired
-	private I${entityName}Service ${entityName?uncap_first}Service;
-	
+	private IChatService chatService;
+	 @Autowired
+	 private IUserService userService;
 	/**
 	  * 分页列表查询
-	 * @param ${entityName?uncap_first}
+	 * @param chat
 	 * @param pageNo
 	 * @param pageSize
 	 * @param req
 	 * @return
 	 */
 	@GetMapping(value = "/list")
-	public Result<IPage<${entityName}>> queryPageList(${entityName} ${entityName?uncap_first},
+	public Map<String, Object> queryPageList(Chat chat,
 									  @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
 									  @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
+										@RequestParam(name="send_id", required = true) String send_id,
+									  @RequestParam(name="recive_id", required = true) String recive_id,
 									  HttpServletRequest req) {
-		Result<IPage<${entityName}>> result = new Result<IPage<${entityName}>>();
-		QueryWrapper<${entityName}> queryWrapper = QueryGenerator.initQueryWrapper(${entityName?uncap_first}, req.getParameterMap());
-		Page<${entityName}> page = new Page<${entityName}>(pageNo, pageSize);
-		IPage<${entityName}> pageList = ${entityName?uncap_first}Service.page(page, queryWrapper);
-		result.setSuccess(true);
-		result.setResult(pageList);
-		return result;
+		User sendUser = userService.getById(send_id);
+		User reciveUser = userService.getById(recive_id);
+		Map<String, Object> map = new HashMap<>();
+		map.put("send", sendUser);
+		map.put("recive", reciveUser);
+		map.put("data", chatService.getChatScroll(send_id, recive_id));
+		return map;
 	}
 	
 	/**
 	  *   添加
-	 * @param ${entityName?uncap_first}
+	 * @param chat
 	 * @return
 	 */
 	@PostMapping(value = "/add")
-	public Result<${entityName}> add(@RequestBody ${entityName} ${entityName?uncap_first}) {
-		Result<${entityName}> result = new Result<${entityName}>();
+	public Result<Chat> add(@RequestBody Chat chat) {
+		Result<Chat> result = new Result<Chat>();
 		try {
-			${entityName?uncap_first}Service.save(${entityName?uncap_first});
+			chatService.save(chat);
 			result.success("添加成功！");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -88,17 +95,17 @@ public class ${entityName}Controller {
 	
 	/**
 	  *  编辑
-	 * @param ${entityName?uncap_first}
+	 * @param chat
 	 * @return
 	 */
 	@PutMapping(value = "/edit")
-	public Result<${entityName}> edit(@RequestBody ${entityName} ${entityName?uncap_first}) {
-		Result<${entityName}> result = new Result<${entityName}>();
-		${entityName} ${entityName?uncap_first}Entity = ${entityName?uncap_first}Service.getById(${entityName?uncap_first}.getId());
-		if(${entityName?uncap_first}Entity==null) {
+	public Result<Chat> edit(@RequestBody Chat chat) {
+		Result<Chat> result = new Result<Chat>();
+		Chat chatEntity = chatService.getById(chat.getChatId());
+		if(chatEntity==null) {
 			result.error500("未找到对应实体");
 		}else {
-			boolean ok = ${entityName?uncap_first}Service.updateById(${entityName?uncap_first});
+			boolean ok = chatService.updateById(chat);
 			//TODO 返回false说明什么？
 			if(ok) {
 				result.success("修改成功!");
@@ -114,13 +121,13 @@ public class ${entityName}Controller {
 	 * @return
 	 */
 	@DeleteMapping(value = "/delete")
-	public Result<${entityName}> delete(@RequestParam(name="id",required=true) String id) {
-		Result<${entityName}> result = new Result<${entityName}>();
-		${entityName} ${entityName?uncap_first} = ${entityName?uncap_first}Service.getById(id);
-		if(${entityName?uncap_first}==null) {
+	public Result<Chat> delete(@RequestParam(name="id",required=true) String id) {
+		Result<Chat> result = new Result<Chat>();
+		Chat chat = chatService.getById(id);
+		if(chat==null) {
 			result.error500("未找到对应实体");
 		}else {
-			boolean ok = ${entityName?uncap_first}Service.removeById(id);
+			boolean ok = chatService.removeById(id);
 			if(ok) {
 				result.success("删除成功!");
 			}
@@ -135,12 +142,12 @@ public class ${entityName}Controller {
 	 * @return
 	 */
 	@DeleteMapping(value = "/deleteBatch")
-	public Result<${entityName}> deleteBatch(@RequestParam(name="ids",required=true) String ids) {
-		Result<${entityName}> result = new Result<${entityName}>();
+	public Result<Chat> deleteBatch(@RequestParam(name="ids",required=true) String ids) {
+		Result<Chat> result = new Result<Chat>();
 		if(ids==null || "".equals(ids.trim())) {
 			result.error500("参数不识别！");
 		}else {
-			this.${entityName?uncap_first}Service.removeByIds(Arrays.asList(ids.split(",")));
+			this.chatService.removeByIds(Arrays.asList(ids.split(",")));
 			result.success("删除成功!");
 		}
 		return result;
@@ -152,13 +159,13 @@ public class ${entityName}Controller {
 	 * @return
 	 */
 	@GetMapping(value = "/queryById")
-	public Result<${entityName}> queryById(@RequestParam(name="id",required=true) String id) {
-		Result<${entityName}> result = new Result<${entityName}>();
-		${entityName} ${entityName?uncap_first} = ${entityName?uncap_first}Service.getById(id);
-		if(${entityName?uncap_first}==null) {
+	public Result<Chat> queryById(@RequestParam(name="id",required=true) String id) {
+		Result<Chat> result = new Result<Chat>();
+		Chat chat = chatService.getById(id);
+		if(chat==null) {
 			result.error500("未找到对应实体");
 		}else {
-			result.setResult(${entityName?uncap_first});
+			result.setResult(chat);
 			result.setSuccess(true);
 		}
 		return result;
@@ -173,13 +180,13 @@ public class ${entityName}Controller {
   @RequestMapping(value = "/exportXls")
   public ModelAndView exportXls(HttpServletRequest request, HttpServletResponse response) {
       // Step.1 组装查询条件
-      QueryWrapper<${entityName}> queryWrapper = null;
+      QueryWrapper<Chat> queryWrapper = null;
       try {
           String paramsStr = request.getParameter("paramsStr");
           if (oConvertUtils.isNotEmpty(paramsStr)) {
               String deString = URLDecoder.decode(paramsStr, "UTF-8");
-              ${entityName} ${entityName?uncap_first} = JSON.parseObject(deString, ${entityName}.class);
-              queryWrapper = QueryGenerator.initQueryWrapper(${entityName?uncap_first}, request.getParameterMap());
+              Chat chat = JSON.parseObject(deString, Chat.class);
+              queryWrapper = QueryGenerator.initQueryWrapper(chat, request.getParameterMap());
           }
       } catch (UnsupportedEncodingException e) {
           e.printStackTrace();
@@ -187,11 +194,11 @@ public class ${entityName}Controller {
 
       //Step.2 AutoPoi 导出Excel
       ModelAndView mv = new ModelAndView(new JeecgEntityExcelView());
-      List<${entityName}> pageList = ${entityName?uncap_first}Service.list(queryWrapper);
+      List<Chat> pageList = chatService.list(queryWrapper);
       //导出文件名称
-      mv.addObject(NormalExcelConstants.FILE_NAME, "${tableVo.ftlDescription}列表");
-      mv.addObject(NormalExcelConstants.CLASS, ${entityName}.class);
-      mv.addObject(NormalExcelConstants.PARAMS, new ExportParams("${tableVo.ftlDescription}列表数据", "导出人:Jeecg", "导出信息"));
+      mv.addObject(NormalExcelConstants.FILE_NAME, "聊天列表");
+      mv.addObject(NormalExcelConstants.CLASS, Chat.class);
+      mv.addObject(NormalExcelConstants.PARAMS, new ExportParams("聊天列表数据", "导出人:Jeecg", "导出信息"));
       mv.addObject(NormalExcelConstants.DATA_LIST, pageList);
       return mv;
   }
@@ -214,11 +221,11 @@ public class ${entityName}Controller {
           params.setHeadRows(1);
           params.setNeedSave(true);
           try {
-              List<${entityName}> list${entityName}s = ExcelImportUtil.importExcel(file.getInputStream(), ${entityName}.class, params);
-              for (${entityName} ${entityName?uncap_first}Excel : list${entityName}s) {
-                  ${entityName?uncap_first}Service.save(${entityName?uncap_first}Excel);
+              List<Chat> listChats = ExcelImportUtil.importExcel(file.getInputStream(), Chat.class, params);
+              for (Chat chatExcel : listChats) {
+                  chatService.save(chatExcel);
               }
-              return Result.ok("文件导入成功！数据行数：" + list${entityName}s.size());
+              return Result.ok("文件导入成功！数据行数：" + listChats.size());
           } catch (Exception e) {
               return Result.error("文件导入失败！");
           } finally {

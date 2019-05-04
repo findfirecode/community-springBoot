@@ -1,4 +1,4 @@
-package ${bussiPackage}.${entityPackage}.controller;
+package org.jeecg.modules.frontend.controller;
 
 import java.util.Arrays;
 import java.util.List;
@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.util.oConvertUtils;
-import ${bussiPackage}.${entityPackage}.entity.${entityName};
-import ${bussiPackage}.${entityPackage}.service.I${entityName}Service;
+import org.jeecg.modules.frontend.entity.Skill;
+import org.jeecg.modules.frontend.service.ISkillService;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -34,35 +34,35 @@ import com.alibaba.fastjson.JSON;
 
  /**
  * @Title: Controller
- * @Description: ${tableVo.ftlDescription}
+ * @Description: 技能服务
  * @author： jeecg-boot
- * @date：   ${.now?string["yyyy-MM-dd"]}
+ * @date：   2019-05-04
  * @version： V1.0
  */
 @RestController
-@RequestMapping("/${entityPackage}/${entityName?uncap_first}")
+@RequestMapping("/frontend/skill")
 @Slf4j
-public class ${entityName}Controller {
+public class SkillController {
 	@Autowired
-	private I${entityName}Service ${entityName?uncap_first}Service;
+	private ISkillService skillService;
 	
 	/**
 	  * 分页列表查询
-	 * @param ${entityName?uncap_first}
+	 * @param skill
 	 * @param pageNo
 	 * @param pageSize
 	 * @param req
 	 * @return
 	 */
 	@GetMapping(value = "/list")
-	public Result<IPage<${entityName}>> queryPageList(${entityName} ${entityName?uncap_first},
+	public Result<IPage<Skill>> queryPageList(Skill skill,
 									  @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
 									  @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
 									  HttpServletRequest req) {
-		Result<IPage<${entityName}>> result = new Result<IPage<${entityName}>>();
-		QueryWrapper<${entityName}> queryWrapper = QueryGenerator.initQueryWrapper(${entityName?uncap_first}, req.getParameterMap());
-		Page<${entityName}> page = new Page<${entityName}>(pageNo, pageSize);
-		IPage<${entityName}> pageList = ${entityName?uncap_first}Service.page(page, queryWrapper);
+		Result<IPage<Skill>> result = new Result<IPage<Skill>>();
+		QueryWrapper<Skill> queryWrapper = QueryGenerator.initQueryWrapper(skill, req.getParameterMap());
+		Page<Skill> page = new Page<Skill>(pageNo, pageSize);
+		IPage<Skill> pageList = skillService.page(page, queryWrapper);
 		result.setSuccess(true);
 		result.setResult(pageList);
 		return result;
@@ -70,14 +70,14 @@ public class ${entityName}Controller {
 	
 	/**
 	  *   添加
-	 * @param ${entityName?uncap_first}
+	 * @param skill
 	 * @return
 	 */
 	@PostMapping(value = "/add")
-	public Result<${entityName}> add(@RequestBody ${entityName} ${entityName?uncap_first}) {
-		Result<${entityName}> result = new Result<${entityName}>();
+	public Result<Skill> add(@RequestBody Skill skill) {
+		Result<Skill> result = new Result<Skill>();
 		try {
-			${entityName?uncap_first}Service.save(${entityName?uncap_first});
+			skillService.save(skill);
 			result.success("添加成功！");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -88,17 +88,17 @@ public class ${entityName}Controller {
 	
 	/**
 	  *  编辑
-	 * @param ${entityName?uncap_first}
+	 * @param skill
 	 * @return
 	 */
 	@PutMapping(value = "/edit")
-	public Result<${entityName}> edit(@RequestBody ${entityName} ${entityName?uncap_first}) {
-		Result<${entityName}> result = new Result<${entityName}>();
-		${entityName} ${entityName?uncap_first}Entity = ${entityName?uncap_first}Service.getById(${entityName?uncap_first}.getId());
-		if(${entityName?uncap_first}Entity==null) {
+	public Result<Skill> edit(@RequestBody Skill skill) {
+		Result<Skill> result = new Result<Skill>();
+		Skill skillEntity = skillService.getById(skill.getSkillId());
+		if(skillEntity==null) {
 			result.error500("未找到对应实体");
 		}else {
-			boolean ok = ${entityName?uncap_first}Service.updateById(${entityName?uncap_first});
+			boolean ok = skillService.updateById(skill);
 			//TODO 返回false说明什么？
 			if(ok) {
 				result.success("修改成功!");
@@ -114,13 +114,13 @@ public class ${entityName}Controller {
 	 * @return
 	 */
 	@DeleteMapping(value = "/delete")
-	public Result<${entityName}> delete(@RequestParam(name="id",required=true) String id) {
-		Result<${entityName}> result = new Result<${entityName}>();
-		${entityName} ${entityName?uncap_first} = ${entityName?uncap_first}Service.getById(id);
-		if(${entityName?uncap_first}==null) {
+	public Result<Skill> delete(@RequestParam(name="id",required=true) String id) {
+		Result<Skill> result = new Result<Skill>();
+		Skill skill = skillService.getById(id);
+		if(skill==null) {
 			result.error500("未找到对应实体");
 		}else {
-			boolean ok = ${entityName?uncap_first}Service.removeById(id);
+			boolean ok = skillService.removeById(id);
 			if(ok) {
 				result.success("删除成功!");
 			}
@@ -135,12 +135,12 @@ public class ${entityName}Controller {
 	 * @return
 	 */
 	@DeleteMapping(value = "/deleteBatch")
-	public Result<${entityName}> deleteBatch(@RequestParam(name="ids",required=true) String ids) {
-		Result<${entityName}> result = new Result<${entityName}>();
+	public Result<Skill> deleteBatch(@RequestParam(name="ids",required=true) String ids) {
+		Result<Skill> result = new Result<Skill>();
 		if(ids==null || "".equals(ids.trim())) {
 			result.error500("参数不识别！");
 		}else {
-			this.${entityName?uncap_first}Service.removeByIds(Arrays.asList(ids.split(",")));
+			this.skillService.removeByIds(Arrays.asList(ids.split(",")));
 			result.success("删除成功!");
 		}
 		return result;
@@ -152,13 +152,13 @@ public class ${entityName}Controller {
 	 * @return
 	 */
 	@GetMapping(value = "/queryById")
-	public Result<${entityName}> queryById(@RequestParam(name="id",required=true) String id) {
-		Result<${entityName}> result = new Result<${entityName}>();
-		${entityName} ${entityName?uncap_first} = ${entityName?uncap_first}Service.getById(id);
-		if(${entityName?uncap_first}==null) {
+	public Result<Skill> queryById(@RequestParam(name="id",required=true) String id) {
+		Result<Skill> result = new Result<Skill>();
+		Skill skill = skillService.getById(id);
+		if(skill==null) {
 			result.error500("未找到对应实体");
 		}else {
-			result.setResult(${entityName?uncap_first});
+			result.setResult(skill);
 			result.setSuccess(true);
 		}
 		return result;
@@ -173,13 +173,13 @@ public class ${entityName}Controller {
   @RequestMapping(value = "/exportXls")
   public ModelAndView exportXls(HttpServletRequest request, HttpServletResponse response) {
       // Step.1 组装查询条件
-      QueryWrapper<${entityName}> queryWrapper = null;
+      QueryWrapper<Skill> queryWrapper = null;
       try {
           String paramsStr = request.getParameter("paramsStr");
           if (oConvertUtils.isNotEmpty(paramsStr)) {
               String deString = URLDecoder.decode(paramsStr, "UTF-8");
-              ${entityName} ${entityName?uncap_first} = JSON.parseObject(deString, ${entityName}.class);
-              queryWrapper = QueryGenerator.initQueryWrapper(${entityName?uncap_first}, request.getParameterMap());
+              Skill skill = JSON.parseObject(deString, Skill.class);
+              queryWrapper = QueryGenerator.initQueryWrapper(skill, request.getParameterMap());
           }
       } catch (UnsupportedEncodingException e) {
           e.printStackTrace();
@@ -187,11 +187,11 @@ public class ${entityName}Controller {
 
       //Step.2 AutoPoi 导出Excel
       ModelAndView mv = new ModelAndView(new JeecgEntityExcelView());
-      List<${entityName}> pageList = ${entityName?uncap_first}Service.list(queryWrapper);
+      List<Skill> pageList = skillService.list(queryWrapper);
       //导出文件名称
-      mv.addObject(NormalExcelConstants.FILE_NAME, "${tableVo.ftlDescription}列表");
-      mv.addObject(NormalExcelConstants.CLASS, ${entityName}.class);
-      mv.addObject(NormalExcelConstants.PARAMS, new ExportParams("${tableVo.ftlDescription}列表数据", "导出人:Jeecg", "导出信息"));
+      mv.addObject(NormalExcelConstants.FILE_NAME, "技能服务列表");
+      mv.addObject(NormalExcelConstants.CLASS, Skill.class);
+      mv.addObject(NormalExcelConstants.PARAMS, new ExportParams("技能服务列表数据", "导出人:Jeecg", "导出信息"));
       mv.addObject(NormalExcelConstants.DATA_LIST, pageList);
       return mv;
   }
@@ -214,11 +214,11 @@ public class ${entityName}Controller {
           params.setHeadRows(1);
           params.setNeedSave(true);
           try {
-              List<${entityName}> list${entityName}s = ExcelImportUtil.importExcel(file.getInputStream(), ${entityName}.class, params);
-              for (${entityName} ${entityName?uncap_first}Excel : list${entityName}s) {
-                  ${entityName?uncap_first}Service.save(${entityName?uncap_first}Excel);
+              List<Skill> listSkills = ExcelImportUtil.importExcel(file.getInputStream(), Skill.class, params);
+              for (Skill skillExcel : listSkills) {
+                  skillService.save(skillExcel);
               }
-              return Result.ok("文件导入成功！数据行数：" + list${entityName}s.size());
+              return Result.ok("文件导入成功！数据行数：" + listSkills.size());
           } catch (Exception e) {
               return Result.error("文件导入失败！");
           } finally {

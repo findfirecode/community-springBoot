@@ -20,7 +20,7 @@ import java.util.Map;
 @Service
 public class CommentsServiceImpl extends ServiceImpl<CommentsMapper, Comments> implements ICommentsService {
     @Override
-    public Page<Map<String, Object>> getCommentsUser(Page<Map<String, Object>> page, String condition, String parentId) {
-        return page.setRecords(this.baseMapper.getCommentsUser(page,condition, parentId));
+    public Page<Map<String, Object>> getCommentsUser(Page<Map<String, Object>> page, String condition, String parentId, String type) {
+        return page.setRecords(this.baseMapper.getCommentsUser(page,condition, parentId, type));
     }
 }

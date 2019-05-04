@@ -41,6 +41,10 @@ public class User implements Serializable {
 	@Excel(name = "role", width = 15)
 	private Integer role;
 
+	/**role*/
+	@Excel(name = "avatar", width = 15)
+	private String avatar;
+
 	public String getUserId() {
 		return userId;
 	}
@@ -87,5 +91,13 @@ public class User implements Serializable {
 
 	public void setRole(Integer role) {
 		this.role = role;
+	}
+
+	public String getAvatar() {
+		return avatar;
+	}
+
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
 	}
 }

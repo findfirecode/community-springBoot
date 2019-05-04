@@ -25,7 +25,7 @@ spring:
       mail: 
         smtp: 
           auth: true
-          starttls: 
+          starttls:
             enable: true
             required: true
   ## quartz定时任务,采用数据库方式

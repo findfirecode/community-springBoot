@@ -20,6 +20,10 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 public interface CommentsMapper extends BaseMapper<Comments> {
     @Select("SELECT c.*,u.`name`,u.avatar FROM comments c " +
             "LEFT JOIN `user` u on c.user_id = u.user_id " +
-            "where c.content like '%${condition}%' and c.type='comments' and c.parent_id = #{parentId} order by create_time desc")
-    List<Map<String, Object>> getCommentsUser(Page<Map<String, Object>> page, @Param("condition") String condition, @Param("parentId") String parentId);
+            "where c.content like '%${condition}%' " +
+            "and c.type=#{type} " +
+            "and c.parent_id = #{parentId} " +
+            "order by create_time desc")
+    List<Map<String, Object>> getCommentsUser(Page<Map<String, Object>> page, @Param("condition") String condition, @Param("parentId") String parentId,
+                                              @Param("type") String type);
 }

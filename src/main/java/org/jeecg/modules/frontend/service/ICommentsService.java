@@ -14,5 +14,7 @@ import java.util.Map;
  * @version： V1.0
  */
 public interface ICommentsService extends IService<Comments> {
-    Page<Map<String, Object>> getCommentsUser(Page<Map<String, Object>> page, String condition, String parentId);
+    Page<Map<String, Object>> getCommentsUser(Page<Map<String, Object>> page,
+                                              String condition, String parentId,
+                                              String type);
 }

@@ -65,9 +65,10 @@ public class CommentsController {
 									  @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
 										@RequestParam(name="contentCondition", defaultValue="%") String contentCondition,
 										@RequestParam(name="parent_id", defaultValue="-1") String parent_id,
+										@RequestParam(name="type", defaultValue="comments") String type,
 									  HttpServletRequest req) {
 		Page<Map<String,Object>> pages = new Page(pageNo, pageSize);
-		Page<Map<String, Object>> list=commentsService.getCommentsUser(pages, contentCondition, parent_id);
+		Page<Map<String, Object>> list=commentsService.getCommentsUser(pages, contentCondition, parent_id, type);
 		return list;
 	}
 	/**
@@ -81,8 +82,6 @@ public class CommentsController {
 		try {
 			comments.setIsdisplay(0);
 			comments.setIsreply(0);
-			comments.setType("comments");
-			comments.setUserId("111");
 			commentsService.save(comments);
 			result.success("添加成功！");
 		} catch (Exception e) {
